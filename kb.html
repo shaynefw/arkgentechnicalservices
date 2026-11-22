@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fix Archive | Arkgen Technical Services</title>
+    <meta name="description" content="Searchable archive of computer, network and device problems we have fixed, with the symptoms, cause and steps." />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+      :root{
+        --red:#dc2626;--red-dark:#b91c1c;--red-glow:rgba(220,38,38,.25);
+        --bg:#0a0a0a;--surface:#141414;--surface-2:#1c1c1c;--surface-3:#242424;
+        --border:#2a2a2a;--text:#f5f5f5;--text-muted:#a3a3a3;--text-dim:#737373;
+      }
+      body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+      nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+      .nav-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.5rem}
+      .logo{font-weight:800;font-size:1.2rem;letter-spacing:-.02em;color:var(--text);text-decoration:none}
+      .logo span{color:var(--red)}
+      .back{color:var(--text-muted);text-decoration:none;font-size:.875rem;font-weight:500}
+      .back:hover{color:var(--text)}
+      main{max-width:1000px;margin:0 auto;padding:3rem 1.5rem 5rem}
+      h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:.75rem}
+      h1 span{color:var(--red)}
+      .lead{color:var(--text-muted);max-width:620px;margin-bottom:2rem}
+      .search{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font:inherit;font-size:1.05rem;padding:1rem 1.25rem}
+      .search:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px var(--red-glow)}
+      .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 .5rem}
+      .chip{background:var(--surface-2);border:1px solid var(--border);color:var(--text-muted);border-radius:100px;padding:.3rem .9rem;font:inherit;font-size:.8rem;font-weight:600;cursor:pointer}
+      .chip:hover{border-color:#404040;color:var(--text)}
+      .chip.on{background:var(--red);border-color:var(--red);color:#fff}
+      .count{color:var(--text-dim);font-size:.85rem;margin:1rem 0}
+      .entry{background:var(--surface);border:1px solid var(--border);border-radius:16px;margin-bottom:1rem;overflow:hidden}
+      .entry:hover{border-color:#404040}
+      .entry summary{list-style:none;cursor:pointer;padding:1.25rem 1.5rem}
+      .entry summary::-webkit-details-marker{display:none}
+      .entry h2{font-size:1.1rem;font-weight:700;margin-bottom:.35rem}
+      .meta{display:flex;flex-wrap:wrap;gap:.4rem 1rem;color:var(--text-dim);font-size:.8rem}
+      .meta b{color:var(--red);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+      .body{padding:0 1.5rem 1.5rem;border-top:1px solid var(--border)}
+      .body h3{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin:1.25rem 0 .4rem}
+      .body p,.body li{color:var(--text-muted);font-size:.95rem}
+      .body ul,.body ol{padding-left:1.25rem}
+      .body li{margin:.2rem 0}
+      .tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.25rem}
+      .tag{background:var(--surface-3);color:var(--text-muted);border-radius:6px;padding:.15rem .6rem;font-size:.75rem}
+      mark{background:rgba(220,38,38,.35);color:#fff;border-radius:3px;padding:0 2px}
+      .empty{background:var(--surface);border:1px dashed var(--border);border-radius:16px;padding:2.5rem;text-align:center;color:var(--text-muted)}
+      .cta{margin-top:3rem;text-align:center;color:var(--text-muted)}
+      .cta a{color:var(--red);font-weight:600}
+      footer{padding:2rem 1.5rem;text-align:center;color:var(--text-dim);font-size:.8rem;border-top:1px solid var(--border)}
+    </style>
+  </head>
+  <body>
+    <nav><div class="nav-inner">
+      <a href="index.html" class="logo">Ark<span>gen</span></a>
+      <a href="index.html" class="back">&larr; Back to site</a>
+    </div></nav>
+    <main>
+      <h1>Fix <span>Archive</span></h1>
+      <p class="lead">Problems we have fixed, with symptoms, cause and steps. Search by error message, device, or keyword.</p>
+      <input id="q" class="search" type="search" placeholder="Search: blue screen, wifi dropping, printer offline..." autocomplete="off" aria-label="Search the fix archive" />
+      <div class="chips" id="chips"></div>
+      <div class="count" id="count" aria-live="polite"></div>
+      <div id="list"></div>
+      <p class="cta">Not solved here? <a href="index.html#contact">Contact us</a>.</p>
+    </main>
+    <footer>&copy; 2025 Arkgen Technical Services. All rights reserved.</footer>
+    <script src="kb/entries.js"></script>
+    <script>
+      const ENTRIES = (window.KB_ENTRIES || []);
+      const $ = id => document.getElementById(id);
+      const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+      const arr = v => Array.isArray(v) ? v : (v ? [v] : []);
+      const text = e => [e.title,e.device,e.os,e.category,e.cause,...arr(e.symptoms),...arr(e.fix),...arr(e.tags)].join(' ').toLowerCase();
+      const hay = ENTRIES.map(text);
+      let cat = '';
+
+      function hl(s, terms) {
+        let out = esc(s);
+        terms.forEach(t => {
+          if (!t) return;
+          out = out.replace(new RegExp('(' + esc(t).replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi'), '<mark>$1</mark>');
+        });
+        return out;
+      }
+      function render() {
+        const terms = $('q').value.toLowerCase().split(/\s+/).filter(Boolean);
+        const hits = ENTRIES.filter((e,i) => (!cat || e.category === cat) && terms.every(t => hay[i].includes(t)));
+        $('count').textContent = ENTRIES.length ? hits.length + ' of ' + ENTRIES.length + ' entries' : '';
+        if (!ENTRIES.length) { $('list').innerHTML = '<div class="empty">No entries yet. Fixes will be added here as we solve them.</div>'; return; }
+        if (!hits.length) { $('list').innerHTML = '<div class="empty">No match. Try fewer or different words.</div>'; return; }
+        $('list').innerHTML = hits.map(e => `
+          <details class="entry" id="${esc(e.id)}" ${terms.length && hits.length <= 3 ? 'open' : ''}>
+            <summary><h2>${hl(e.title,terms)}</h2>
+              <div class="meta"><b>${esc(e.category||'')}</b><span>${hl(e.device||'',terms)}</span><span>${hl(e.os||'',terms)}</span><span>${esc(e.date||'')}</span></div></summary>
+            <div class="body">
+              ${arr(e.symptoms).length ? '<h3>Symptoms</h3><ul>' + arr(e.symptoms).map(s=>'<li>'+hl(s,terms)+'</li>').join('') + '</ul>' : ''}
+              ${e.cause ? '<h3>Cause</h3><p>' + hl(e.cause,terms) + '</p>' : ''}
+              ${arr(e.fix).length ? '<h3>Fix</h3><ol>' + arr(e.fix).map(s=>'<li>'+hl(s,terms)+'</li>').join('') + '</ol>' : ''}
+              <div class="tags">${arr(e.tags).map(t=>'<span class="tag">'+esc(t)+'</span>').join('')}</div>
+            </div>
+          </details>`).join('');
+      }
+      const cats = [...new Set(ENTRIES.map(e => e.category).filter(Boolean))].sort();
+      $('chips').innerHTML = cats.length ? ['All',...cats].map(c => `<button class="chip${c==='All'?' on':''}" data-c="${c==='All'?'':esc(c)}">${esc(c)}</button>`).join('') : '';
+      $('chips').addEventListener('click', ev => {
+        const b = ev.target.closest('.chip'); if (!b) return;
+        cat = b.dataset.c; document.querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x === b)); render();
+      });
+      $('q').addEventListener('input', render);
+      render();
+      if (location.hash) { const el = document.getElementById(location.hash.slice(1)); if (el) { el.open = true; el.scrollIntoView(); } }
+    </script>
+  </body>
+</html>
